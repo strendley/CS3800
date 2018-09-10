@@ -1,0 +1,19 @@
+
+*** Modified files in JOE when it aborted on Fri Sep  7 18:29:23 2018
+*** JOE was aborted by signal 1
+
+*** File 'file.h'
+#ifndef FILE_H
+#define FILE_H
+
+
+
+
+
+
+#endif
+*** Modified files in JOE when it aborted on Sat Sep  8 19:44:11 2018
+*** JOE was aborted by signal 1
+
+*** File 'subDirectory.h'
+//comment here
