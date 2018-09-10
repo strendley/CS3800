@@ -159,18 +159,18 @@ void directory::printFilePerms()
 
 void directory::newPerms(string flag, string fileName)
 {
-    //vector<File> filesInDir = this->getFiles();
+    vector<File> filesInDir = this->getFiles();
     bool foundFile = false;
     int permissionVal;
+    int pos;
 
-    for(unsigned int i = 0; i < this->getFiles().size(); i++)
+    for(unsigned int i = 0; i < filesInDir.size(); i++)
     {
         //check first to see if the file exists
-        if(fileName == this->getFiles()[i].getName())
+        if(fileName == filesInDir[i].getName())
         {
             foundFile = true;
-            getFiles()[i].m_filePermissions.clear();
-
+            pos = i;
 
             for(unsigned int j = 0; j < flag.length(); j++)
             {
@@ -180,49 +180,50 @@ void directory::newPerms(string flag, string fileName)
                 {
                     case 0:
                     {
-                        this->getFiles()[i].m_filePermissions[j]=("---");
+                        cout << "being change at 0"<< endl;
+                        filesInDir[i].m_filePermissions[j]="---";
                     }
                     break;
 
                     case 1:
                     {
-                       this->getFiles()[i].m_filePermissions[j]=("--x");
+                       filesInDir[i].m_filePermissions[j]="--x";
                     }
                     break;
 
                     case 2:
                     {
-                        this->getFiles()[i].m_filePermissions[j]=("-w-");
+                        filesInDir[i].m_filePermissions[j]="-w-";
                     }
                     break;
 
                     case 3:
                     {
-                         this->getFiles()[i].m_filePermissions[j]=("-wx");
+                         filesInDir[i].m_filePermissions[j]="-wx";
                     }
                     break;
 
                     case 4:
                     {
-                         this->getFiles()[i].m_filePermissions[j]=("r--");
+                         filesInDir[i].m_filePermissions[j]="r--";
                     }
                     break;
                     
                     case 5:
                     {
-                         this->getFiles()[i].m_filePermissions[j]=("r-x");
+                         filesInDir[i].m_filePermissions[j]="r-x";
                     }
                     break;
 
                     case 6:
                     {
-                        this->getFiles()[i].m_filePermissions[j]=("rw-");
+                        filesInDir[i].m_filePermissions[j]="rw-";
                     }
                     break;
 
                     case 7:
                     {
-                         this->getFiles()[i].m_filePermissions[j]=("rwx");
+                         filesInDir[i].m_filePermissions[j]="rwx";
                     }
                     break;
 
@@ -237,6 +238,7 @@ void directory::newPerms(string flag, string fileName)
                 }
             }
 
+        this->directoryItems[this->currentDir].first[pos].m_filePermissions = filesInDir[pos].m_filePermissions;
 
         return;
 

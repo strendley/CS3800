@@ -20,8 +20,8 @@ class directory
     directory()
     {
         setDirName();
-        directoryItems[currentDir].first.push_back(File("randomFileTester.txt"));
-        directoryItems[currentDir].second.push_back(subDirectory("randomDirectory"));
+        directoryItems[currentDir].first.push_back(File("file.txt"));
+        directoryItems[currentDir].second.push_back(subDirectory("dir"));
     }
 
 
