@@ -17,23 +17,28 @@ class subDirectory
        // map 
 
     public:
+        vector<string> m_subPermissions;
         //default constructor
         subDirectory();
 
         //getters
         string getSubTime() {return m_subTime;}
         string getSubName() {return m_subName;}
-        //string getPerms() {return m_filePermissions[1];}
+
+        void setTime()
+        {
+            time_t now = time(NULL);
+            m_subTime = ctime(&now);
+        }
 
         //paramaterized constructor
         subDirectory(string nameOfDir)
         {
             m_subName = nameOfDir;
-            m_subTime = time(NULL);
-            //m_filePermissions.push_back("rwx");
-            //m_filePermissions.push_back("---");
-            //m_filePermissions.push_back("---");
-
+            setTime();
+            m_subPermissions.push_back("---");
+            m_subPermissions.push_back("---");
+            m_subPermissions.push_back("rwx");
         }
 
 

@@ -35,7 +35,7 @@ int main()
                 if(flagOrFileName == "-l")
                 {
                     //output directory contents with permissions
-                    dir.printFilePerms();
+                    dir.printPerms();
                 }
 
                 else if(flagOrFileName == "")

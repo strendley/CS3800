@@ -142,45 +142,60 @@ void directory::removeDirectory(string dirName)
     }
 }
 
-void directory::printFilePerms()
+void directory::printPerms()
 {
     //loop through the file directory to print the name & perms of each file
     vector<File> filesInDir = this->getFiles();
     for(unsigned int i = 0; i < filesInDir.size(); i++)
     {
-        cout << filesInDir[i].getName() << " ";
+        cout << filesInDir[i].getName() << " | ";
         for(unsigned int j = 0; j < filesInDir[i].m_filePermissions[i].size(); j++)
         {
             cout << filesInDir[i].m_filePermissions[j];
         }
-        cout << endl;
+        cout << " | " << filesInDir[i].getTime();
+    }
+
+    vector<subDirectory> subDirs = this->getSubDirs();
+    for(unsigned int i = 0; i < subDirs.size(); i++)
+    {
+        cout << subDirs[i].getSubName() << " | ";
+        for(unsigned int j = 0; j < subDirs[i].m_subPermissions[i].size(); j++)
+        {
+            cout << subDirs[i].m_subPermissions[j];
+        }
+        cout << " | " << subDirs[i].getSubTime();
     }
 }
 
-void directory::newPerms(string flag, string fileName)
+void directory::newPerms(string flag, string name)
 {
-    vector<File> filesInDir = this->getFiles();
-    bool foundFile = false;
+    
+    bool found = false;
     int permissionVal;
     int pos;
 
+    vector<File> filesInDir = this->getFiles();
     for(unsigned int i = 0; i < filesInDir.size(); i++)
     {
         //check first to see if the file exists
-        if(fileName == filesInDir[i].getName())
+        if(name == filesInDir[i].getName())
         {
-            foundFile = true;
-            pos = i;
+            found = true;
 
+            //update last changed time
+            this->directoryItems[this->currentDir].first[i].setTime();
+
+            pos = i;
             for(unsigned int j = 0; j < flag.length(); j++)
             {
-                permissionVal = flag[i] - 48;
+
+                permissionVal = flag[j] - 48;
 
                 switch(permissionVal)
                 {
                     case 0:
                     {
-                        cout << "being change at 0"<< endl;
                         filesInDir[i].m_filePermissions[j]="---";
                     }
                     break;
@@ -246,11 +261,96 @@ void directory::newPerms(string flag, string fileName)
         }
     }
 
+    vector<subDirectory> subDirs = this->getSubDirs();
+    for(unsigned int i = 0; i < subDirs.size(); i++)
+    {
+        //check first to see if the file exists
+        if(name == subDirs[i].getSubName())
+        {
+            found = true;
+
+            //update last changed time
+            this->directoryItems[this->currentDir].second[i].setTime();
+
+            pos = i;
+            for(unsigned int j = 0; j < flag.length(); j++)
+            {
+
+                permissionVal = flag[j] - 48;
+
+                switch(permissionVal)
+                {
+                    case 0:
+                    {
+                        subDirs[i].m_subPermissions[j]="---";
+                    }
+                    break;
+
+                    case 1:
+                    {
+                       subDirs[i].m_subPermissions[j]="--x";
+                    }
+                    break;
+
+                    case 2:
+                    {
+                        subDirs[i].m_subPermissions[j]="-w-";
+                    }
+                    break;
+
+                    case 3:
+                    {
+                        subDirs[i].m_subPermissions[j]="-wx";
+                    }
+                    break;
+
+                    case 4:
+                    {
+                        subDirs[i].m_subPermissions[j]="r--";
+                    }
+                    break;
+                    
+                    case 5:
+                    {
+                        subDirs[i].m_subPermissions[j]="r-x";
+                    }
+                    break;
+
+                    case 6:
+                    {
+                        subDirs[i].m_subPermissions[j]="rw-";
+                    }
+                    break;
+
+                    case 7:
+                    {
+                        subDirs[i].m_subPermissions[j]="rwx";
+                    }
+                    break;
+
+                    default:
+                    {
+                        cout << "ERROR: PERMISSION NOT RECOGNIZED" << endl;
+                        return;
+                    }
+
+
+                }
+            }
+
+        this->directoryItems[this->currentDir].second[pos].m_subPermissions = subDirs[pos].m_subPermissions;
+
+        return;
+
+
+        }
+    }
+
     //if it does not, return back to the prompt
-    if(foundFile == false)
+    if(found == false)
     {
          //if the file was not found, tell the user it did not exist
-        cout << "ERROR: COULD NOT MODIFY FILE -> '" << fileName << "' DOES NOT EXIST"  << endl;
+        cout << "ERROR: COULD NOT MODIFY FILE -> '" << name << "' DOES NOT EXIST"  << endl;
         return;
     }
 }

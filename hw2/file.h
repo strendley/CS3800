@@ -13,23 +13,28 @@ class File
 {
     private:
         string m_fileName;
-       
-
+        string m_fileTime;
     public:
-     vector<string> m_filePermissions;
+        vector<string> m_filePermissions;
+
         //default constructor
         File();
 
         //getters
         string getName() {return m_fileName;}
-        vector<string> getPerms(){return m_filePermissions;}
+        string getTime() {return m_fileTime;}
+
+        void setTime()
+        {
+            time_t now = time(NULL);
+            m_fileTime = ctime(&now);
+        }
 
         //paramaterized constructor
         File(string nameOfFile)
         {
             m_fileName = nameOfFile;
-            time_t fileTime = time(NULL);
-            string now = ctime(&fileTime);
+            setTime();
             m_filePermissions.push_back("rwx");
             m_filePermissions.push_back("---");
             m_filePermissions.push_back("---");

@@ -78,10 +78,10 @@ class directory
     //change to chosen directory
     void changeDirectory(string dirName);
     
-    //print the permissions of the files
-    void printFilePerms();
+    //print the permissions of the contents in the directory
+    void printPerms();
     
-    //alter the permissions of the directory
+    //alter the permissions of the file
     void newPerms(string flag, string fileName);
 
 
