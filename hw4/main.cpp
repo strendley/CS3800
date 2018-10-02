@@ -41,7 +41,7 @@ void loadQueue(queue<string>& fileQueue)
 }
 
 
-void mapperThread(queue<string>& fileQueue, queue<int>& wordQueue, string keyWord)
+void mapperThread(string keyWord, queue<string>& fileQueue, queue<int>& wordQueue)
 {
     string top;
     int numWords = 0;    
@@ -81,7 +81,7 @@ void mapperThread(queue<string>& fileQueue, queue<int>& wordQueue, string keyWor
 
 }
 
-void reducerThread(queue<int>& wordQueue, int index)
+void reducerThread(queue<int>& wordQueue)
 {
     int countOne = 0, countTwo = 0, sum = 0;
 
@@ -129,7 +129,7 @@ int main()
 
     for(unsigned int i = 0; i<fileQueue.size(); i++)
     {
-        mapVec.push_back(thread(mapperThread, ref(fileQueue), ref(wordQueue), word));
+        mapVec.push_back(thread(mapperThread, word, ref(fileQueue), ref(wordQueue)));
     }
 
      //launch mapper threads and wait for them to complete the mapping
@@ -138,7 +138,7 @@ int main()
 
     for(unsigned int i = 0; i<wordQueue.size(); i++)
     {
-        reduceVec.push_back(thread(reducerThread, ref(wordQueue), i));
+        reduceVec.push_back(thread(reducerThread, ref(wordQueue)));
     }
     
     //launch reducer thread(s) and wait for them to complete their work
